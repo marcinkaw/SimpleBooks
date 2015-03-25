@@ -1,4 +1,4 @@
-"""
+﻿"""
 Django settings for Books project.
 """
 
@@ -170,3 +170,7 @@ LOGGING = {
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# Simple books settings
+BOOKS_DEFAULT_BOOK = 'KAS'
+BOOKS_DEFAULT_CURRENCY = 'PLN'

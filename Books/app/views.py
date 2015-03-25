@@ -11,7 +11,7 @@ from .forms import ReportForm
 from django.shortcuts import redirect
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
-
+from django.conf import settings
 
 def home(request):
 	"""Renders the home page."""
@@ -86,9 +86,12 @@ def report_add(request):
 			return redirect('home')
 	else:
 		# TODO Quick and dirty
-		b = Book.objects.all().filter(abbreviation='KAS')
-		c = Currency.objects.all().filter(abbreviation='zł')
-		form = ReportForm(initial={'book' : b[0].id, 'currency' : c[0].id})
+		form_initials = {}
+		if hasattr(settings, 'BOOKS_DEFAULT_BOOK'):
+			form_initials['book'] = Book.objects.all().filter(abbreviation=settings.BOOKS_DEFAULT_BOOK)[0].id
+		if hasattr(settings, 'BOOKS_DEFAULT_CURRENCY'):
+			form_initials['currency'] = Currency.objects.all().filter(name=settings.BOOKS_DEFAULT_CURRENCY)[0].id
+		form = ReportForm(initial=form_initials)
 		context = {'form' : form}
 	return render(request, "app/reportnew.html", context)
 
