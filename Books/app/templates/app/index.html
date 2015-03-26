@@ -16,19 +16,24 @@
     </div>
 </div>
 
+<table class="table table-striped table-condensed">
+    <tbody>
 {% for report in all_reports %}
-<div class="row">
-    <div class="col-md-6">
-        <p><a class="btn btn-primary" href="{% url 'report_detail' report.id %}">Edytuj raport: {{ report }} - Od: {{ report.fromDate }}; do: {{ report.toDate }}</a></p>
-    </div>
-    <div class="col-md-4">
-        <p><a class="btn btn-danger" href="{% url 'report_delete' report.id %}">Usuń raport</a></p>
-    </div>
-</div>
+
+        <tr>
+            <td>
+                <a class="" href="{% url 'report_detail' report.id %}">{{ report }} - Od: {{ report.fromDate }}; do: {{ report.toDate }}</a>
+            </td>
+            <td>
+                <p><a class="btn btn-danger" href="{% url 'report_delete' report.id %}">Usuń raport</a></p>
+            </td>
+        </tr>
+
 {% empty %}
 No reports.
 {% endfor %}
-
+    </tbody>
+</table>
 
 
 {% endblock %}

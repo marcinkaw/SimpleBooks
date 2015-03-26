@@ -3,10 +3,49 @@
 
 {% block content %}
 
-<form method="POST" action="/report/edit/{{ report.id }}/">
+<form class="form-inline" method="POST" action="/report/edit/{{ report.id }}/">
   {% csrf_token %}
   {{ form | crispy }}
   <input type="submit" value="Aktualizuj"/>
 </form>
+
+<p>Dodaj do kasy: <a class="btn btn-success" href="#">Dodaj wpis</a></p>
+
+Pozycje w kasie:
+
+<table class="table table-striped table-condensed">
+    <tbody>
+{% for item in items %}
+
+        <tr>
+            <td>
+                {{ item.id }}
+            </td>
+            <td>
+                {{ item.itemDirection }}
+            </td>
+            <td>
+                {{ item.abbreviation }}<br />
+                {{ item.date }}
+            </td>
+            <td>
+                {{ item.title }}
+            </td>
+            <td>
+                {{ item.party }}
+            </td>
+            <td>
+                {{ item.amount }}
+            </td>
+            <td>
+                <p><a class="btn btn-danger" href="#">Usuń item</a></p>
+            </td>
+        </tr>
+
+{% empty %}
+No items.
+{% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

@@ -67,7 +67,8 @@ def report_detail(request, pk):
 	try:
 		report = Report.objects.get(pk=pk)
 		form = ReportForm(instance=report)
-		context = {'report' : report, 'form' : form}
+		items = Item.objects.all().filter(report=report)
+		context = {'report' : report, 'form' : form, 'items' : items}
 	except Report.DoesNotExist:
 		raise Http404("Raport nie istnieje!")
 	return render(

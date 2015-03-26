@@ -130,9 +130,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app',    
     'django.contrib.admin',
     'crispy_forms',
+	'app',    
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
