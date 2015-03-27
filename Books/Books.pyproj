@@ -55,6 +55,7 @@
     <Folder Include="Books\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\templates\app\itemnew.html" />
     <Content Include="app\templates\app\reportdetail.html" />
     <Content Include="app\templates\app\reportnew.html" />
     <Content Include="requirements.txt" />

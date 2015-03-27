@@ -43,4 +43,7 @@ urlpatterns = patterns('',
     url(r'^report/detail/(?P<pk>\d+)/$', 'app.views.report_detail', name='report_detail'),
     url(r'^report/edit/(?P<pk>\d+)/$', 'app.views.report_edit', name='report_edit'),
     url(r'^report/add/$', 'app.views.report_add', name='report_add'),
+	url(r'^item/add/(?P<rpk>\d+)/$', 'app.views.item_add', name='item_add'),
+	url(r'^item/delete/(?P<rpk>\d+)/(?P<pk>\d+)/$', 'app.views.item_delete', name='item_delete'),
+    
 )

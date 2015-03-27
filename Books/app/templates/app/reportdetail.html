@@ -9,7 +9,7 @@
   <input type="submit" value="Aktualizuj"/>
 </form>
 
-<p>Dodaj do kasy: <a class="btn btn-success" href="#">Dodaj wpis</a></p>
+<p>Dodaj do kasy: <a class="btn btn-success" href="/item/add/{{ report.id }}">Dodaj wpis</a></p>
 
 Pozycje w kasie:
 
@@ -38,7 +38,7 @@ Pozycje w kasie:
                 {{ item.amount }}
             </td>
             <td>
-                <p><a class="btn btn-danger" href="#">Usuń item</a></p>
+                <p><a class="btn btn-danger" href="{% url 'item_delete' report.id item.id %}">Usuń item</a></p>
             </td>
         </tr>
 

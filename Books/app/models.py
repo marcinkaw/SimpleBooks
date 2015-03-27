@@ -50,6 +50,8 @@ class Item(models.Model):
 	title = models.CharField(max_length=200)
 	amount = models.DecimalField(max_digits=6, decimal_places=2, default=0)
 	party = models.CharField(max_length=200)
+	creator = models.ForeignKey(User, related_name="Wpis utworzony przez",
+								verbose_name="Wpis utworzony przez")
 	def __str__(self):
 		return self.abbreviation
 

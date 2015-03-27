@@ -7,7 +7,7 @@ from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
 from .models import *
-from .forms import ReportForm
+from .forms import *
 from django.shortcuts import redirect
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
@@ -115,3 +115,33 @@ def report_edit(request, pk):
 				raise Http404("Raport nie istnieje!")
 	
 	return redirect('home')
+
+@login_required
+def item_add(request, rpk):
+	# find report
+	try:
+		report = Report.objects.get(pk=rpk)
+	except  Report.DoesNotExist:
+		raise Http404("Raport nie istnieje!")
+	
+	# if report founf
+	if request.method == 'POST':
+		report = Report.objects.get(pk=rpk)
+		item = Item(creator=request.user, report=report)
+		form = ItemForm(data=request.POST, instance=item)
+		if form.is_valid():
+			form.save()
+			return report_detail(request, rpk)
+	else:
+		form = ItemForm()
+		context = {'form' : form, 'report' : report}
+	return render(request, "app/itemnew.html", context)
+
+def item_delete(request, rpk, pk):
+	
+	assert isinstance(request, HttpRequest)
+	try:
+		Item.objects.get(pk=pk).delete()
+	except Report.DoesNotExist:
+		raise Http404("Wpis nie istnieje!")
+	return report_detail(request, rpk)
