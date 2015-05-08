@@ -91,7 +91,7 @@ def report_add(request):
 		if hasattr(settings, 'BOOKS_DEFAULT_BOOK'):
 			form_initials['book'] = Book.objects.all().filter(abbreviation=settings.BOOKS_DEFAULT_BOOK)[0].id
 		if hasattr(settings, 'BOOKS_DEFAULT_CURRENCY'):
-			form_initials['currency'] = Currency.objects.all().filter(name=settings.BOOKS_DEFAULT_CURRENCY)[0].id
+			form_initials['currency'] = Currency.objects.all().filter(abbreviation=settings.BOOKS_DEFAULT_CURRENCY)[0].id
 		form = ReportForm(initial=form_initials)
 		context = {'form' : form}
 	return render(request, "app/reportnew.html", context)
@@ -131,10 +131,11 @@ def item_add(request, rpk):
 		form = ItemForm(data=request.POST, instance=item)
 		if form.is_valid():
 			form.save()
-			return report_detail(request, rpk)
+			#return report_detail(request, rpk)
+			return redirect(report)
 	else:
 		form = ItemForm()
-		context = {'form' : form, 'report' : report}
+	context = {'form' : form, 'report' : report}
 	return render(request, "app/itemnew.html", context)
 
 def item_delete(request, rpk, pk):
