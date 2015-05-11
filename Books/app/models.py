@@ -10,11 +10,6 @@ from datetime import date
 from django.db.models import Q
 from django.core.urlresolvers import reverse
 
-BOOKITEMDIRECTION = (
-    ('out','KW'),
-    ('in', 'KP')
-)
-
 class Book(models.Model):
 	name = models.CharField(max_length=256)
 	abbreviation = models.CharField(max_length=8)
@@ -33,7 +28,8 @@ class Report(models.Model):
 	book = models.ForeignKey(Book, related_name="Kasa")
 	currency = models.ForeignKey(Currency, related_name="Waluta",
 								verbose_name="Waluta raportu",
-								help_text="Waluta raportu kasowego")
+								#help_text="Waluta raportu kasowego"
+								)
 	creator = models.ForeignKey(User, related_name="Utworzony przez",
 								verbose_name="Utworzony przez")
 	lastAmount = models.DecimalField('Przeniesienie', max_digits=10, decimal_places=2, default=0)
@@ -45,10 +41,14 @@ class Report(models.Model):
 	def get_absolute_url(self):
 		return reverse('report_detail', args=[self.id])
 
-class Item(models.Model):
+class Item(models.Model):	
+	BOOKITEMDIRECTION = (
+		('out','KW'),
+		('in', 'KP')
+	)
 	report = models.ForeignKey(Report, related_name="Raport")
 	itemDirection = models.CharField(max_length=3, choices=BOOKITEMDIRECTION, default='out')
-	date = models.DateField('Date', default=date.today())
+	itemDate = models.DateField('Date', default=date.today())
 	title = models.CharField(max_length=200)
 	party = models.CharField(max_length=200)
 	creator = models.ForeignKey(User, related_name="Wpis utworzony przez",
@@ -60,6 +60,14 @@ class Item(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('url', args=[self._check_id_field])
+
+	def itemDirection_verbose(self):
+		return dict(Item.BOOKITEMDIRECTION)[self.itemDirection]
+
+	@property
+	def number(self):
+		items = Item.objects.filter(report = self.report).filter(itemDirection=self.itemDirection).filter(itemDate__lt=self.itemDate).order_by('itemDate').order_by('id')
+		return str(self.itemDirection_verbose()) + "/" + str(len(items)+1).zfill(2) + "/" + str(self.itemDate.month).zfill(2) + "/" + str(self.report.book) + "/" + str(self.itemDate.year)
 
 #class ItemsManaget(models.Manager):
 #	def items_for_report(self, report)

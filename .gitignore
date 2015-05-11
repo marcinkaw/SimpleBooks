@@ -101,3 +101,4 @@ $RECYCLE.BIN/
 *.lnk
 /*.suo
 /Books/books_env/.ptvs
+*.sqlite3

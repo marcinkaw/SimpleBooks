@@ -12,6 +12,8 @@ from django.shortcuts import redirect
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+import json
+from django.http import HttpResponse
 
 def home(request):
 	"""Renders the home page."""
@@ -67,7 +69,7 @@ def report_detail(request, pk):
 	try:
 		report = Report.objects.get(pk=pk)
 		form = ReportForm(instance=report)
-		items = Item.objects.all().filter(report=report)
+		items = Item.objects.all().filter(report=report).order_by('itemDate')
 		context = {'report' : report, 'form' : form, 'items' : items}
 	except Report.DoesNotExist:
 		raise Http404("Raport nie istnieje!")
@@ -146,3 +148,20 @@ def item_delete(request, rpk, pk):
 	except Report.DoesNotExist:
 		raise Http404("Wpis nie istnieje!")
 	return report_detail(request, rpk)
+
+def get_partys(request):
+	if request.is_ajax():
+		q = request.GET.get('term', '')
+		items = Item.objects.filter(party__startswith = q )#.distinct('party')
+		results = []
+		for party in items:
+			party_json = {}
+			#party_json['id'] = party.id
+			party_json['label'] = party.party
+			party_json['value'] = party.party
+			results.append(party_json)
+		data = json.dumps(results)
+	else:
+		data = 'fail'
+	mimetype = 'application/json'
+	return HttpResponse(data, mimetype)

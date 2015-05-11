@@ -8,6 +8,7 @@ from app.forms import BootstrapAuthenticationForm
 
 from django.conf.urls import include
 from django.contrib import admin
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -45,5 +46,6 @@ urlpatterns = patterns('',
     url(r'^report/add/$', 'app.views.report_add', name='report_add'),
 	url(r'^item/add/(?P<rpk>\d+)/$', 'app.views.item_add', name='item_add'),
 	url(r'^item/delete/(?P<rpk>\d+)/(?P<pk>\d+)/$', 'app.views.item_delete', name='item_delete'),
+	url(r'^api/get_partys/', 'app.views.get_partys', name='get_partys'),
     
 )
