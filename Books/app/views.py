@@ -115,7 +115,7 @@ def report_edit(request, pk):
 				)
 			except  Report.DoesNotExist:
 				raise Http404("Raport nie istnieje!")
-	
+	rozl
 	return redirect('home')
 
 @login_required
@@ -152,13 +152,13 @@ def item_delete(request, rpk, pk):
 def get_partys(request):
 	if request.is_ajax():
 		q = request.GET.get('term', '')
-		items = Item.objects.filter(party__startswith = q )#.distinct('party')
+		items = Item.objects.filter(party__startswith = q ).values('party').distinct()
 		results = []
 		for party in items:
 			party_json = {}
 			#party_json['id'] = party.id
-			party_json['label'] = party.party
-			party_json['value'] = party.party
+			party_json['label'] = party['party']
+			party_json['value'] = party['party']
 			results.append(party_json)
 		data = json.dumps(results)
 	else:
