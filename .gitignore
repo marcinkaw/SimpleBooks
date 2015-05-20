@@ -102,3 +102,4 @@ $RECYCLE.BIN/
 /*.suo
 /Books/books_env/.ptvs
 *.sqlite3
+*.coverage

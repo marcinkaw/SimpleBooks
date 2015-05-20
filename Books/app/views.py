@@ -36,7 +36,7 @@ def contact(request):
 		{
 			'title':'Kontakt',
 			'message':'Strona kontaktowa.',
-			'year':datetime.now().year,
+			'year': datetime.datetime.now().year,
 		})
 	)
 
@@ -50,10 +50,11 @@ def about(request):
 		{
 			'title':'O kasie',
 			'message':'Informacje o "Prostej kasie".',
-			'year':datetime.now().year,
+			'year':datetime.datetime.now().year,
 		})
 	)
 
+@login_required
 def report_delete(request, pk):
 	"""Renders the home page."""
 	assert isinstance(request, HttpRequest)
