@@ -1,0 +1,41 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+
+<div class="jumbotron">
+    <h1>Prosta kasa</h1>
+    <p class="lead">witamy w aplikacji "Prosta kasa". Twórz księgi. Wystawiaj KW/KP. Generuje raporty ksiegowe. From "z o. o." for "z o. o.".</p>
+    <p><a href="https://www.codefusion.pl/" class="btn btn-primary btn-large">by CODEFUSION &raquo;</a></p>
+</div>
+
+<div>
+    <div>
+        <p><a class="btn btn-success" href="{% url 'report_add' %}">Dodaj raport</a></p>
+    </div>
+</div>
+
+<table class="table table-striped table-condensed">
+    <tbody>
+{% for report in all_reports %}
+
+        <tr>
+            <td>
+                <a class="" href="{% url 'report_detail' report.id %}">{{ report }} - Od: {{ report.fromDate }}; do: {{ report.toDate }}</a>
+            </td>
+            <td>
+                <p><a class="btn btn-success" href="{% url 'item_add' report.id %}">Dodaj wpis</a></p>
+            </td>
+            <td>
+                <p><a class="btn btn-danger" href="{% url 'report_delete' report.id %}">Usuń raport</a></p>
+            </td>
+        </tr>
+
+{% empty %}
+No reports.
+{% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

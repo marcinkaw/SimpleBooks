@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <Name>SimpleBooks</Name>
+    <RootNamespace>SimpleBooks</RootNamespace>
+    <InterpreterId>{e08b01c2-16c5-49f3-9667-62b7996f63d1}</InterpreterId>
+    <InterpreterVersion>3.4</InterpreterVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>8d674f68-1317-46c4-bd78-6c6eaa48538f</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <StartupFile>manage.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <LaunchProvider>Django launcher</LaunchProvider>
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="app\admin.py" />
+    <Compile Include="app\forms.py" />
+    <Compile Include="app\models.py" />
+    <Compile Include="app\tests.py" />
+    <Compile Include="app\views.py" />
+    <Compile Include="app\__init__.py" />
+    <Compile Include="manage.py" />
+    <Compile Include="SimpleBooks\__init__.py" />
+    <Compile Include="SimpleBooks\settings.py" />
+    <Compile Include="SimpleBooks\urls.py" />
+    <Compile Include="SimpleBooks\wsgi.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app\" />
+    <Folder Include="app\static\" />
+    <Folder Include="app\static\app\" />
+    <Folder Include="app\static\app\content\" />
+    <Folder Include="app\static\app\fonts\" />
+    <Folder Include="app\static\app\scripts\" />
+    <Folder Include="app\static\app\scripts\ui\" />
+    <Folder Include="app\static\app\scripts\ui\external\" />
+    <Folder Include="app\static\app\scripts\ui\external\jquery\" />
+    <Folder Include="app\static\app\scripts\ui\images\" />
+    <Folder Include="app\templates\" />
+    <Folder Include="app\templates\app\" />
+    <Folder Include="SimpleBooks\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\static\app\scripts\ui\external\jquery\jquery.js" />
+    <Content Include="app\static\app\scripts\ui\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-icons_222222_256x240.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="app\static\app\scripts\ui\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="app\static\app\scripts\ui\index.html" />
+    <Content Include="app\static\app\scripts\ui\jquery-ui.css" />
+    <Content Include="app\static\app\scripts\ui\jquery-ui.js" />
+    <Content Include="app\static\app\scripts\ui\jquery-ui.min.css" />
+    <Content Include="app\static\app\scripts\ui\jquery-ui.min.js" />
+    <Content Include="app\static\app\scripts\ui\jquery-ui.structure.css" />
+    <Content Include="app\static\app\scripts\ui\jquery-ui.structure.min.css" />
+    <Content Include="app\static\app\scripts\ui\jquery-ui.theme.css" />
+    <Content Include="app\static\app\scripts\ui\jquery-ui.theme.min.css" />
+    <Content Include="app\templates\app\itemnew.html" />
+    <Content Include="app\templates\app\reportdetail.html" />
+    <Content Include="app\templates\app\reportnew.html" />
+    <Content Include="app\templates\app\reportprint.html" />
+    <Content Include="requirements.txt" />
+    <Content Include="db.sqlite3" />
+    <Content Include="app\static\app\content\bootstrap.css" />
+    <Content Include="app\static\app\content\bootstrap.min.css" />
+    <Content Include="app\static\app\content\site.css" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="app\static\app\scripts\bootstrap.js" />
+    <Content Include="app\static\app\scripts\bootstrap.min.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.min.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.min.map" />
+    <Content Include="app\static\app\scripts\jquery.validate-vsdoc.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.min.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="app\static\app\scripts\modernizr-2.6.2.js" />
+    <Content Include="app\static\app\scripts\respond.js" />
+    <Content Include="app\static\app\scripts\respond.min.js" />
+    <Content Include="app\static\app\scripts\_references.js" />
+    <Content Include="app\templates\app\about.html" />
+    <Content Include="app\templates\app\contact.html" />
+    <Content Include="app\templates\app\index.html" />
+    <Content Include="app\templates\app\layout.html" />
+    <Content Include="app\templates\app\login.html" />
+    <Content Include="app\templates\app\loginpartial.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="readme.mht">
+      <SubType>WebBrowser</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="env\">
+      <Id>{e08b01c2-16c5-49f3-9667-62b7996f63d1}</Id>
+      <BaseInterpreter>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</BaseInterpreter>
+      <Version>3.4</Version>
+      <Description>env (Python 3.4)</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <LibraryPath>Lib\</LibraryPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X86</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
+  <!-- Specify pre- and post-build commands in the BeforeBuild and 
+       AfterBuild targets below. -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <AutoAssignPort>True</AutoAssignPort>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

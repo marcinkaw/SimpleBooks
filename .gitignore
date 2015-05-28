@@ -1,0 +1,9 @@
+/*.suo
+/bin
+/obj
+/app/__pycache__
+/SimpleBooks/__pycache__
+/*.user
+/env/.ptvs
+/env/Include
+/env/Lib
