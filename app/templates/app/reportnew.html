@@ -1,5 +1,4 @@
 ﻿{% extends "app/layout.html" %}
-{% load crispy_forms_tags %}
 
 {% block content %}
 
@@ -13,7 +12,7 @@
 
 <form method="POST" action="/report/add/">
   {% csrf_token %}
-  {{ form | crispy }}
+  {{ form }}
   <input type="submit" value="Dodaj"/>
 </form>
 
