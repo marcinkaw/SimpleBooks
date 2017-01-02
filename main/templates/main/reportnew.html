@@ -1,0 +1,22 @@
+﻿{% extends "main/layout.html" %}
+
+{% block content %}
+
+<script language="javascript">
+
+    $(document).ready(function () {
+        $('#id_fromDate').datepicker({ dateFormat: 'dd.mm.yy' }).val();
+		$('#id_toDate').datepicker({ dateFormat: 'dd.mm.yy' }).val();
+    });
+
+</script>
+
+<form method="POST" action=".">
+  {% csrf_token %}
+  <table>
+  {{ form }}
+  </table>
+  <input type="submit" value="Dodaj"/>
+</form>
+
+{% endblock %}
