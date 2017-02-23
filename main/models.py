@@ -12,17 +12,20 @@ from django.core.urlresolvers import reverse
 from django.db.models import Sum
 from django.utils import timezone
 
+
 class Book(models.Model):
 	name = models.CharField(max_length=256)
 	abbreviation = models.CharField(max_length=8)
 	def __str__(self):
 		return str(self.abbreviation)
 
+
 class Currency(models.Model):
 	name = models.CharField(max_length=50)
 	abbreviation = models.CharField(max_length=4)
 	def __str__(self):
 		return str(self.abbreviation)
+
 
 class Report(models.Model):
 	fromDate = models.DateField('Data od', default=datetime.datetime(date.today().year, date.today().month, 1))
