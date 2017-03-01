@@ -14,7 +14,8 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import json
 from django.http import HttpResponse
-
+from wkhtmltopdf.views import PDFTemplateResponse
+import math
 
 def index(request):
     return HttpResponse("Hello, SimpleBooks!")
@@ -83,18 +84,21 @@ def report_detail(request, pk):
 @login_required
 def report_print(request, pk):
     assert isinstance(request, HttpRequest)
+    template = 'main/reportprint.html'
     try:
         report = Report.objects.get(pk=pk)
         form = ReportForm(instance=report)
         items = Item.objects.all().filter(report=report).order_by('itemDate')
-        context = {'report' : report, 'form' : form, 'items' : items}
+        pages = int(math.ceil(items.count() / settings.PDF_NUMBER_OF_ITEMS_PER_PAGE))
+        context = {'report' : report, 'form' : form, 'items' : items, 'page_range': range(0, pages)}
+        if pages > 1:
+            template = 'main/reportprint.html'
     except Report.DoesNotExist:
         raise Http404("Raport nie istnieje!")
-    return render(
-        request,
-        'main/reportprint.html',
-        context
-    )
+
+    pdf = PDFTemplateResponse(template=template, request=request, context=context, show_content_in_browser=True)
+
+    return HttpResponse(pdf.rendered_content, 'application/pdf')
 
 @login_required
 def report_add(request):
@@ -130,9 +134,8 @@ def report_edit(request, pk):
                     'main/reportdetail.html',
                     context
                 )
-            except  Report.DoesNotExist:
+            except Report.DoesNotExist:
                 raise Http404("Raport nie istnieje!")
-    rozl
     return redirect('home')
 
 @login_required

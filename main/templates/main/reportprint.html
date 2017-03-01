@@ -1,21 +1,35 @@
 ﻿{% load humanize %}
 
 {% block content %}
+<style>
+    .breakable-tag {
+        page-break-after: always;
+    }
+    table.main {
+        table-layout: fixed;
+        width: 100%;
+    }
+</style>
 
-CODEFUSION Spółka z ograniczoną odpowiedzialnością</br>
-ul. Armii Krajowej 16/2</br>
-45-071 Opole</br>
-NIP: 7542999127</br>
+{% for current_page in page_range %}
+
+CODEFUSION Spółka z ograniczoną odpowiedzialnością<br />
+ul. Armii Krajowej 16/2<br />
+45-071 Opole<<br />
+NIP: 7542999127<br />
+
 <br />
-<b>Raport kasowy</b><br />
+<b>Raport kasowy</b>
+<br />
 <br />
 okres od {{ report.fromDate|date:"d-m-Y"  }} do {{ report.toDate|date:"d-m-Y"  }}, kasa: {{ report.book.abbreviation }}, waluta: {{ report.currency.abbreviation }}
 <br />
 <br />
-<table border="1">
+
+<table border="1" class="main">
     <thead>
         <tr>
-            <td>
+            <td width="5%">
                 Lp
             </td>
             <td>
@@ -36,8 +50,7 @@ okres od {{ report.fromDate|date:"d-m-Y"  }} do {{ report.toDate|date:"d-m-Y"  }
         </tr>
     </thead>
     <tbody>
-{% for item in items %}
-
+{% for item in items|slice:":20" %}
         <tr>
             <td>
                 {{ item.letter }}
@@ -62,20 +75,20 @@ okres od {{ report.fromDate|date:"d-m-Y"  }} do {{ report.toDate|date:"d-m-Y"  }
                 {% endif %}
             </td>
         </tr>
-
 {% empty %}
 No items.
 {% endfor %}
 
+<!--
         <tr>
             <td>
-                
+
             </td>
             <td>
-                
+
             </td>
             <td>
-                
+
             </td>
             <td>
                 Obroty
@@ -87,13 +100,13 @@ No items.
                 {{ report.sumOut|floatformat:2 }}
             </td>
         </tr>
-
+-->
     </tbody>
 </table>
 
 <br />
 
-<table border="1" >
+<table border="1">
         <tr>
             <td>
                 Stan kasy poprzedni
@@ -119,7 +132,8 @@ No items.
 </table>
 
 <br />
-Sporządził: ...................
-<br />
+<p class="breakable-tag">Sporządził: ...................</p>
+
+{% endfor %}
 
 {% endblock %}
