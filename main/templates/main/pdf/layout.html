@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        p.header span {
+            display: block;
+        }
+
+        .breakable-tag {
+            page-break-after: always;
+        }
+
+        table.main {
+            width: 100%;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+           border: 1px solid black;
+        }
+
+        .summary1 , .summary2{
+            margin: 20px 0 20px 0;
+        }
+
+
+        .summary-tables , .summary1{
+            float: right;
+        }
+
+        .author {
+            float:left;
+        }
+    </style>
+</head>
+
+{% load humanize %}
+
+<body>
+    {% with lastpage_
+    {% for current_page in page_range %}
+    <p class="header">
+        {% block header %} {% endblock %}
+    </p>
+
+    <h2>Raport kasowy</h2>
+
+    <p>
+        {% block details %} {% endblock %}
+    </p>
+
+    {% block table %} {% endblock %}
+
+    <div class="author">
+        {% block author %} {% endblock %}
+    </div>
+
+    <div class="summary-tables">
+        <div class="summary1">
+                {% block summary1 %}{% endblock %}
+        </div>
+
+        <div class="summary2">
+            {% block summary2 %} {% endblock %}
+        </div>
+    </div>
+
+    <div class="breakable-tag"></div>
+
+    {% endfor %}
+</body>
+
+</html>

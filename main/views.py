@@ -90,13 +90,11 @@ def report_print(request, pk):
         form = ReportForm(instance=report)
         items = Item.objects.all().filter(report=report).order_by('itemDate')
         pages = int(math.ceil(items.count() / settings.PDF_NUMBER_OF_ITEMS_PER_PAGE))
-        context = {'report' : report, 'form' : form, 'items' : items, 'page_range': range(0, pages)}
-        if pages > 1:
-            template = 'main/reportprint.html'
+        context = {'report' : report, 'form' : form, 'items' : items, 'page_range': range(pages)}
     except Report.DoesNotExist:
         raise Http404("Raport nie istnieje!")
 
-    pdf = PDFTemplateResponse(template=template, request=request, context=context, show_content_in_browser=True)
+    pdf = PDFTemplateResponse(template=template, request=request, context=context)
 
     return HttpResponse(pdf.rendered_content, 'application/pdf')
 

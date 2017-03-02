@@ -37,9 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'django.contrib.humanize',
-	'main',
+    'django.contrib.humanize',
+    'main',
     'wkhtmltopdf',
+    'main.templatetags',
 ]
 
 MIDDLEWARE = [
@@ -134,7 +135,7 @@ BOOKS_DEFAULT_BOOK = 'KAS'
 BOOKS_DEFAULT_CURRENCY = 'PLN'
 
 # Pdf settings
-PDF_NUMBER_OF_ITEMS_PER_PAGE = 20
+PDF_NUMBER_OF_ITEMS_PER_PAGE = 15
 
 # Path to wkhtmltopdf executable
 WKHTMLTOPDF_CMD = 'C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf'
