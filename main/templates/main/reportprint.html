@@ -1,6 +1,7 @@
 ﻿{% extends "main/pdf/layout.html" %}
 
 {% load pdf_filters %}
+{% load pdf_tags %}
 
 {% block header %}
 <span>CODEFUSION Spółka z ograniczoną odpowiedzialnością</span>
@@ -26,7 +27,8 @@ okres od {{ report.fromDate|date:"d-m-Y"  }} do {{ report.toDate|date:"d-m-Y"  }
         </tr>
     </thead>
     <tbody>
-{% for item in items|pgel:current_page %}
+
+{% for item in items|slicelist:current_page %}
         <tr>
             <td>{{ item.letter }}</td>
             <td>{{ item.number }}<br />{{ item.itemDate }}</td>
@@ -46,66 +48,51 @@ okres od {{ report.fromDate|date:"d-m-Y"  }} do {{ report.toDate|date:"d-m-Y"  }
 {% empty %}
 No items.
 {% endfor %}
-
-<!--
-        <tr>
-            <td>
-
-            </td>
-            <td>
-
-            </td>
-            <td>
-
-            </td>
-            <td>
-                Obroty
-            </td>
-            <td>
-                {{ report.sumIn|floatformat:2 }}
-            </td>
-            <td>
-                {{ report.sumOut|floatformat:2 }}
-            </td>
-        </tr>
--->
     </tbody>
 </table>
 {% endblock %}
 
 {% block summary1 %}
-{% ifequal current_page page_range|last %}
+{% if current_page > 0 %}
+{% sumfolio items current_page "in" as folio_in %}
+{% sumfolio items current_page "out" as folio_out %}
+
+{% previous_folio items current_page "in" as prev_folio_in %}
+{% previous_folio items current_page "out" as prev_folio_out %}
+
 <table>
         <tr>
             <td>Suma folio</td>
-            <td width="80px">0</td>
-            <td width="80px">0</td>
+            <td width="80px">{{ folio_in|floatformat:2 }}</td>
+            <td width="80px">{{ folio_out|floatformat:2 }}</td>
         </tr>
         <tr>
             <td>Przeniesienie</td>
-            <td width="80px">0</td>
-            <td width="80px">0</td>
+            <td width="80px">{{ prev_folio_in|floatformat:2 }}</td>
+            <td width="80px">{{ prev_folio_out|floatformat:2 }}</td>
         </tr>
 </table>
-{% endifequal  %}
+{% endif  %}
 {% endblock %}
 
 {% block summary2 %}
+{% overall_sum items current_page "in" as overall_in %}
+{% overall_sum items current_page "out" as overall_out %}
 <table>
         <tr>
             <td>Obroty</td>
-            <td width="80px">0</td>
-            <td width="80px">0</td>
+            <td width="80px">{{ overall_in|floatformat:2 }}</td>
+            <td width="80px">{{ overall_out|floatformat:2 }}</td>
         </tr>
         <tr>
             <td>Stan kasy poprzedni</td>
-            <td width="80px">0</td>
-            <td width="80px">0</td>
+            <td width="80px">{{ report.trasnferAmount|floatformat:2 }}</td>
+            <td width="80px"></td>
         </tr>
         <tr>
             <td>Stan kasy obecny</td>
+            <td width="80px"></td>
             <td width="80px">{{ report.amount|floatformat:2 }}</td>
-            <td width="80px">0</td>
         </tr>
 </table>
 {%  endblock %}

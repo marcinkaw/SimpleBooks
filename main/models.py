@@ -56,7 +56,7 @@ class Report(models.Model):
 
 	@property
 	def amount(self):
-		return float(self.lastAmount) + float(self.sumIn) - float(self.sumOut)
+		return float(self.trasnferAmount) + float(self.sumIn) - float(self.sumOut)
 
 
 class Item(models.Model):	

@@ -27,7 +27,6 @@
             margin: 20px 0 20px 0;
         }
 
-
         .summary-tables , .summary1{
             float: right;
         }
@@ -41,7 +40,6 @@
 {% load humanize %}
 
 <body>
-    {% with lastpage_
     {% for current_page in page_range %}
     <p class="header">
         {% block header %} {% endblock %}
@@ -69,7 +67,9 @@
         </div>
     </div>
 
-    <div class="breakable-tag"></div>
+    {% if current_page < page_range|last %}
+        <div class="breakable-tag"></div>
+    {% endif %}
 
     {% endfor %}
 </body>

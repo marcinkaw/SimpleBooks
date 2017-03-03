@@ -25,7 +25,11 @@ SECRET_KEY = ')73)+#n%ucb3h*k4w-17f+48%jggb-+27(&3(^ey(3omw#981x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '192.168.1.34',
+    '127.0.0.1',
+    'localhost',
+]
 
 
 # Application definition
@@ -135,7 +139,7 @@ BOOKS_DEFAULT_BOOK = 'KAS'
 BOOKS_DEFAULT_CURRENCY = 'PLN'
 
 # Pdf settings
-PDF_NUMBER_OF_ITEMS_PER_PAGE = 15
+PDF_NUMBER_OF_ITEMS_PER_PAGE = 20
 
 # Path to wkhtmltopdf executable
 WKHTMLTOPDF_CMD = 'C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf'
