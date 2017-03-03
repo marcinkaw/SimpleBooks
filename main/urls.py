@@ -11,21 +11,22 @@ urlpatterns = [
     url(r'^report/delete/(?P<pk>\d+)/$', views.report_delete, name='report_delete'),
     url(r'^report/detail/(?P<pk>\d+)/$', views.report_detail, name='report_detail'),
     url(r'^report/edit/(?P<pk>\d+)/$', views.report_edit, name='report_edit'),
-	url(r'^report/print/(?P<pk>\d+)/$', views.report_print, name='report_print'),
+    url(r'^report/print/(?P<pk>\d+)/$', views.report_print, name='report_print'),
+    url(r'^report/print/(?P<pk>\d+)/(?P<page_items>\d+)$', views.report_print, name='report_print'),
     url(r'^report/add/$', views.report_add, name='report_add'),
-	url(r'^item/add/(?P<rpk>\d+)/$', views.item_add, name='item_add'),
-	url(r'^item/delete/(?P<rpk>\d+)/(?P<pk>\d+)/$', views.item_delete, name='item_delete'),
-	url(r'^api/get_partys/', views.get_partys, name='get_partys'),
-	
-	url(r'^login/$',
-		auth_views.login,
+    url(r'^item/add/(?P<rpk>\d+)/$', views.item_add, name='item_add'),
+    url(r'^item/delete/(?P<rpk>\d+)/(?P<pk>\d+)/$', views.item_delete, name='item_delete'),
+    url(r'^api/get_partys/', views.get_partys, name='get_partys'),
+
+    url(r'^login/$',
+        auth_views.login,
         {
             'template_name': 'main/login.html',
             'authentication_form': BootstrapAuthenticationForm,
-			'extra_context':
+            'extra_context':
             {
-              'title':'Log in',
-              'year':datetime.now().year,
+              'title': 'Log in',
+              'year': datetime.now().year,
             }
         },
         name='login'),
