@@ -9,6 +9,13 @@
         $('#id_toDate').datepicker({ dateFormat: 'dd.mm.yy' }).val();
     });
 
+    function printClick(element) {
+        $(element).attr('href', function() {
+            itemsPerPage = $('#id_items_per_page').val();
+            return this.href + itemsPerPage;
+        });
+    }
+
 </script>
 
 <form class="form-inline" method="POST" action="/main/report/edit/{{ report.id }}/">
@@ -84,6 +91,7 @@ No items.
     </tbody>
 </table>
 
-<a class="btn btn-danger" href="{% url 'report_print' report.id %}">Drukuj raport</a>
+<p>Ilość wpisów na strone: <input id="id_items_per_page" type="number" min="1" max="25" value="20"></p>
+<a onclick="printClick(this);" class="btn btn-danger" href="{% url 'report_print' report.id %}">Drukuj raport</a>
 
 {% endblock %}

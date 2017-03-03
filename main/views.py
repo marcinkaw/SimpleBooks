@@ -17,8 +17,10 @@ from django.http import HttpResponse
 from wkhtmltopdf.views import PDFTemplateResponse
 import math
 
+
 def index(request):
     return HttpResponse("Hello, SimpleBooks!")
+
 
 def home(request):
     """Renders the home page."""
@@ -28,8 +30,9 @@ def home(request):
     return render(
         request,
         'main/index.html',
-            context
+        context
     )
+
 
 def contact(request):
     """Renders the contact page."""
@@ -43,6 +46,7 @@ def contact(request):
         context
         )
 
+
 def about(request):
     """Renders the about page."""
     assert isinstance(request, HttpRequest)
@@ -50,10 +54,11 @@ def about(request):
         request,
         'main/about.html',
         context = {
-            'title':'O kasie',
-            'message':'Informacje o "Prostej kasie".',
-            'year':datetime.datetime.now().year,
+            'title': 'O kasie',
+            'message': 'Informacje o "Prostej kasie".',
+            'year': datetime.datetime.now().year,
         })
+
 
 @login_required
 def report_delete(request, pk):
@@ -64,6 +69,7 @@ def report_delete(request, pk):
     except Report.DoesNotExist:
         raise Http404("Raport nie istnieje!")
     return redirect('home')
+
 
 @login_required
 def report_detail(request, pk):
@@ -81,22 +87,43 @@ def report_detail(request, pk):
         context
     )
 
+
 @login_required
-def report_print(request, pk):
+def report_print(request, pk, page_items=0):
     assert isinstance(request, HttpRequest)
     template = 'main/reportprint.html'
+    page_items = int(page_items)
+    if page_items <= 0:
+        page_items = getattr(settings, 'PDF_NUMBER_OF_ITEMS_PER_PAGE', 20)
+    elif page_items >= 25:
+        page_items = 25
+
     try:
         report = Report.objects.get(pk=pk)
         form = ReportForm(instance=report)
         items = Item.objects.all().filter(report=report).order_by('itemDate')
-        pages = int(math.ceil(items.count() / settings.PDF_NUMBER_OF_ITEMS_PER_PAGE))
-        context = {'report' : report, 'form' : form, 'items' : items, 'page_range': range(pages)}
+        pages = int(math.ceil(items.count() / page_items))
+        context = {
+            'report': report,
+            'form': form,
+            'items': items,
+            'page_range': range(pages),
+            'items_per_page': page_items,
+        }
     except Report.DoesNotExist:
         raise Http404("Raport nie istnieje!")
 
-    pdf = PDFTemplateResponse(template=template, request=request, context=context)
+    cmd_options = {
+        'margin-top': 5,
+        'margin-right': 5,
+        'margin-left': 5,
+        'margin-bottom': 5,
+    }
+
+    pdf = PDFTemplateResponse(template=template, request=request, context=context, cmd_options=cmd_options)
 
     return HttpResponse(pdf.rendered_content, 'application/pdf')
+
 
 @login_required
 def report_add(request):
@@ -114,8 +141,9 @@ def report_add(request):
         if hasattr(settings, 'BOOKS_DEFAULT_CURRENCY'):
             form_initials['currency'] = Currency.objects.all().filter(abbreviation=settings.BOOKS_DEFAULT_CURRENCY)[0].id
         form = ReportForm(initial=form_initials)
-        context = {'form' : form}
+        context = {'form': form}
     return render(request, "main/reportnew.html", context)
+
 
 @login_required
 def report_edit(request, pk):
@@ -136,6 +164,7 @@ def report_edit(request, pk):
                 raise Http404("Raport nie istnieje!")
     return redirect('home')
 
+
 @login_required
 def item_add(request, rpk):
     # find report
@@ -155,8 +184,9 @@ def item_add(request, rpk):
             return redirect(report)
     else:
         form = ItemForm()
-    context = {'form' : form, 'report' : report}
+    context = {'form': form, 'report': report}
     return render(request, "main/itemnew.html", context)
+
 
 def item_delete(request, rpk, pk):
 
@@ -167,10 +197,11 @@ def item_delete(request, rpk, pk):
         raise Http404("Wpis nie istnieje!")
     return report_detail(request, rpk)
 
+
 def get_partys(request):
     if request.is_ajax():
         q = request.GET.get('term', '')
-        items = Item.objects.filter(party__startswith = q ).values('party').distinct()
+        items = Item.objects.filter(party__startswith=q).values('party').distinct()
         results = []
         for party in items:
             party_json = {}
@@ -181,5 +212,6 @@ def get_partys(request):
         data = json.dumps(results)
     else:
         data = 'fail'
+
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)

@@ -30,4 +30,4 @@ class ReportForm(ModelForm):
 class ItemForm(ModelForm):
     class Meta:
         model = Item
-        exclude = ['creator','report']
+        exclude = ['creator', 'report']

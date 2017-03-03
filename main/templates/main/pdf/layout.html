@@ -3,6 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <style>
+        body {
+            font-family: Arial;
+            letter-spacing: normal;
+        }
+
         p.header span {
             display: block;
         }
@@ -23,16 +28,21 @@
            border: 1px solid black;
         }
 
+        td {
+            padding: 2px;
+        }
+
         .summary1 , .summary2{
             margin: 20px 0 20px 0;
         }
 
-        .summary-tables , .summary1{
+        .summary-tables , .summary1 {
             float: right;
         }
 
         .author {
             float:left;
+            margin-top: 30px;
         }
     </style>
 </head>
@@ -59,7 +69,7 @@
 
     <div class="summary-tables">
         <div class="summary1">
-                {% block summary1 %}{% endblock %}
+            {% block summary1 %}{% endblock %}
         </div>
 
         <div class="summary2">

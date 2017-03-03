@@ -1,6 +1,5 @@
 ﻿{% extends "main/pdf/layout.html" %}
 
-{% load pdf_filters %}
 {% load pdf_tags %}
 
 {% block header %}
@@ -28,7 +27,8 @@ okres od {{ report.fromDate|date:"d-m-Y"  }} do {{ report.toDate|date:"d-m-Y"  }
     </thead>
     <tbody>
 
-{% for item in items|slicelist:current_page %}
+{% list_page_slice items current_page items_per_page as sliced_list %}
+{% for item in sliced_list %}
         <tr>
             <td>{{ item.letter }}</td>
             <td>{{ item.number }}<br />{{ item.itemDate }}</td>
@@ -54,11 +54,12 @@ No items.
 
 {% block summary1 %}
 {% if current_page > 0 %}
-{% sumfolio items current_page "in" as folio_in %}
-{% sumfolio items current_page "out" as folio_out %}
 
-{% previous_folio items current_page "in" as prev_folio_in %}
-{% previous_folio items current_page "out" as prev_folio_out %}
+{% sum_single_page items current_page "in" items_per_page as folio_in %}
+{% sum_single_page items current_page "out" items_per_page as folio_out %}
+
+{% sum_previous_pages items current_page "in" items_per_page as prev_folio_in %}
+{% sum_previous_pages items current_page "out" items_per_page as prev_folio_out %}
 
 <table>
         <tr>
@@ -76,8 +77,8 @@ No items.
 {% endblock %}
 
 {% block summary2 %}
-{% overall_sum items current_page "in" as overall_in %}
-{% overall_sum items current_page "out" as overall_out %}
+{% get_sum_from_all_pages items current_page "in" items_per_page as overall_in %}
+{% get_sum_from_all_pages items current_page "out" items_per_page as overall_out %}
 <table>
         <tr>
             <td>Obroty</td>
