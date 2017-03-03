@@ -131,8 +131,8 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'main/media/')
 MEDIA_URL = '/media/'
 
-LOGIN_URL = '/login'
-LOGIN_REDIRECT_URL = '/main'
+LOGIN_URL = '/main/login/'
+LOGIN_REDIRECT_URL = '/main/'
 
 # Simple books settings
 BOOKS_DEFAULT_BOOK = 'KAS'
