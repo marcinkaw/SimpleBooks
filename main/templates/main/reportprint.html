@@ -31,7 +31,7 @@ okres od {{ report.fromDate|date:"d-m-Y"  }} do {{ report.toDate|date:"d-m-Y"  }
 {% for item in sliced_list %}
         <tr>
             <td>{{ item.letter }}</td>
-            <td>{{ item.number }}<br />{{ item.itemDate }}</td>
+            <td>{{ item.number }}<br />{{ item.item_date_numeric }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item.party }}</td>
             <td>

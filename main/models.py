@@ -115,6 +115,10 @@ class Item(models.Model):
 
         return str(len(items)+ad)
 
+    @property
+    def item_date_numeric(self):
+        return str(str(self.itemDate.day).zfill(2) + "." + str(self.itemDate.month).zfill(2) + "." + str(self.itemDate.year))
+
 
 
 #class ItemsManaget(models.Manager):

@@ -113,15 +113,44 @@ def report_print(request, pk, page_items=0):
     except Report.DoesNotExist:
         raise Http404("Raport nie istnieje!")
 
-    cmd_options = {
-        'margin-top': 5,
-        'margin-right': 5,
-        'margin-left': 5,
-        'margin-bottom': 5,
-    }
+    cmd_options = {}
 
     pdf = PDFTemplateResponse(template=template, request=request, context=context, cmd_options=cmd_options)
 
+    return HttpResponse(pdf.rendered_content, 'application/pdf')
+
+
+@login_required
+def receipt_print(request, pk):
+    report = Report.objects.get(pk=pk)
+    items = Item.objects.all().filter(report=report).order_by('itemDate')
+
+    context = {"items": items}
+    cmd_options = {
+        'orientation': 'landscape',
+        'margin-top': 0,
+        'margin-right': 0,
+        'margin-left': 0,
+        'margin-bottom': 0,
+    }
+
+    pdf = PDFTemplateResponse(template='main/reportprint2.html', request=request, context=context, cmd_options=cmd_options)
+    return HttpResponse(pdf.rendered_content, 'application/pdf')
+
+@login_required
+def receipt_print_single(request, pk):
+    it = Item.objects.all().filter(pk=pk)
+    context = {"items": it}
+
+    cmd_options = {
+        'orientation': 'landscape',
+        'margin-top': 0,
+        'margin-right': 0,
+        'margin-left': 0,
+        'margin-bottom': 0,
+    }
+
+    pdf = PDFTemplateResponse(template='main/reportprint2.html', request=request, context=context, cmd_options=cmd_options)
     return HttpResponse(pdf.rendered_content, 'application/pdf')
 
 
@@ -173,7 +202,7 @@ def item_add(request, rpk):
     except  Report.DoesNotExist:
         raise Http404("Raport nie istnieje!")
 
-    # if report founf
+    # if report found
     if request.method == 'POST':
         report = Report.objects.get(pk=rpk)
         item = Item(creator=request.user, report=report)

@@ -49,9 +49,8 @@ Pozycje w kasie:
             <td>
                 Rozchód
             </td>
-            <td>
-
-            </td>
+            <td></td>
+            <td></td>
         </tr>
     </thead>
     <tbody>
@@ -62,7 +61,7 @@ Pozycje w kasie:
                 {{ item.letter }}
             </td>
             <td>
-                {{ item.number }}<br />{{ item.itemDate }}
+                {{ item.number }}<br />{{ item.item_date_numeric }}
             </td>
             <td>
                 {{ item.title }}
@@ -81,6 +80,9 @@ Pozycje w kasie:
                 {% endif %}
             </td>
             <td>
+                <p><a class="btn btn-danger" href="{% url 'receipt_print_single' item.id %}">Drukuj dokument</a></p>
+            </td>
+            <td>
                 <p><a class="btn btn-danger" href="{% url 'item_delete' report.id item.id %}">Usuń item</a></p>
             </td>
         </tr>
@@ -93,5 +95,6 @@ No items.
 
 <p>Ilość wpisów na strone: <input id="id_items_per_page" type="number" min="1" max="25" value="20"></p>
 <a onclick="printClick(this);" class="btn btn-danger" href="{% url 'report_print' report.id %}">Drukuj raport</a>
+<a class="btn btn-danger" href="{% url 'receipt_print' report.id %}">Drukuj dokument kasowy</a>
 
 {% endblock %}

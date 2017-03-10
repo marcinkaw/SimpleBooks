@@ -1,5 +1,6 @@
 from django import template
-from django.conf import settings
+from main.utils.pyliczba import kwotaslownie
+import math
 
 register = template.Library()
 
@@ -45,3 +46,9 @@ def get_sum_from_all_pages(items, page, direction, items_per_page):
     sliced_items = items[:end]
 
     return sum_list(sliced_items, direction)
+
+
+@register.filter(name='number2words')
+def convert_number_to_words(number):
+    return kwotaslownie(float(number))
+
