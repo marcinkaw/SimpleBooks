@@ -20,7 +20,7 @@ from main import views
 admin.autodiscover()
 
 urlpatterns = [
-	url(r'^$', views.home, name='home'),
+    url(r'^$', views.home, name='home'),
     url(r'^main/', include('main.urls')),
     url(r'^admin/', admin.site.urls),
 ]
