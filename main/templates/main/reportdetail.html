@@ -2,13 +2,29 @@
 
 {% block content %}
 
-<form class="form-inline" method="POST" action="/report/edit/{{ report.id }}/">
+<script language="javascript">
+
+    $(document).ready(function () {
+        $('#id_fromDate').datepicker({ dateFormat: 'dd.mm.yy' }).val();
+        $('#id_toDate').datepicker({ dateFormat: 'dd.mm.yy' }).val();
+    });
+
+    function printClick(element) {
+        $(element).attr('href', function() {
+            itemsPerPage = $('#id_items_per_page').val();
+            return this.href + itemsPerPage;
+        });
+    }
+
+</script>
+
+<form class="form-inline" method="POST" action="/main/report/edit/{{ report.id }}/">
   {% csrf_token %}
   {{ form }}
   <input type="submit" value="Aktualizuj"/>
 </form>
 
-<p>Dodaj do kasy: <a class="btn btn-success" href="{% url 'item_add' report.id %}">Dodaj wpis</a></p>
+<p>Dodaj do kasy: <a class="btn btn-primary" href="{% url 'item_add' report.id %}">Dodaj wpis</a></p>
 
 Pozycje w kasie:
 
@@ -33,9 +49,9 @@ Pozycje w kasie:
             <td>
                 Rozchód
             </td>
-            <td>
-
-            </td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
     </thead>
     <tbody>
@@ -46,7 +62,7 @@ Pozycje w kasie:
                 {{ item.letter }}
             </td>
             <td>
-                {{ item.number }}<br />{{ item.itemDate }}
+                {{ item.number }}<br />{{ item.item_date_numeric }}
             </td>
             <td>
                 {{ item.title }}
@@ -65,16 +81,26 @@ Pozycje w kasie:
                 {% endif %}
             </td>
             <td>
-                <p><a class="btn btn-danger" href="{% url 'item_delete' report.id item.id %}">Usuń item</a></p>
+                <p><a class="btn btn-success" href="{% url 'receipt_print_single' item.id %}">Drukuj dokument</a></p>
+            </td>
+            <td>
+                <p><a class="btn btn-warning" href="{% url 'item_edit' report.id item.id %}">Edytuj wpis</a></p>
+            </td>
+            <td>
+                <p><a class="btn btn-danger" href="{% url 'item_delete' report.id item.id %}">Usuń wpis</a></p>
             </td>
         </tr>
 
 {% empty %}
-No items.
+Brak wpisów.
 {% endfor %}
     </tbody>
 </table>
 
-<a class="btn btn-danger" href="{% url 'report_print' report.id %}">Drukuj raport</a>
+{% if items|length > 0 %}
+    <p>Ilość wpisów na strone: <input id="id_items_per_page" type="number" min="1" max="25" value="20"></p>
+    <a onclick="printClick(this);" class="btn btn-primary" href="{% url 'report_print' report.id %}">Drukuj raport</a>
+    <a class="btn btn-primary" href="{% url 'receipt_print' report.id %}">Drukuj dokument kasowy</a>
+{% endif %}
 
 {% endblock %}

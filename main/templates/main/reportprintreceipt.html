@@ -1,0 +1,61 @@
+{% extends 'main/pdf/layout_receipt.html' %}
+
+{% load humanize %}
+{% load pdf_tags %}
+
+{% block table %}
+
+<table border="1">
+    <tr>
+        <td colspan="2">CODEFUSION Spółka z ograniczoną odpowiedzialnością<br />
+            ul. Armii Krajowej 16/2<br />
+            45-071 Opole<br />
+            NIP: 7542999127<br />
+        </td>
+    </tr>
+
+    <tr>
+        <td rowspan="2" class="fixed-width">
+            <span class="title">kontrahent:</span>
+            <span class="value">{{ item.party }}</span>
+        </td>
+        <td>
+            <span class="title">dowód wpłaty/wypłaty z dnia:</span>
+            <span class="value">{{ item.item_date_numeric }}</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="center thick">{{ item.number }}</td>
+    </tr>
+
+    <tr>
+        <td rowspan="2" class="fixed-width">
+            <span class="title">tytułem:</span>
+            <span class="value">{{ item.title }}</span>
+        </td>
+        <td>
+            <span class="title">słownie:</span>
+            <span class="value">{{ item.amount|number2words }} PLN</span>
+        </td>
+    </tr>
+    <tr>
+        <td height="1px">
+            <span class="amount-text thick">wartość:</span>
+            <span class="amount-value thick">{{ item.amount|floatformat:2 }}</span>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="fixed-width">
+            <span class="title">wystawił:</span>
+            <span class="value"></span>
+        </td>
+        <td>
+            <span class="title">kwotę powyższą otrzymałem:</span>
+        </td>
+    </tr>
+
+</table>
+
+{% endblock %}
+

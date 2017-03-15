@@ -25,7 +25,11 @@ SECRET_KEY = ')73)+#n%ucb3h*k4w-17f+48%jggb-+27(&3(^ey(3omw#981x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '192.168.1.34',
+    '127.0.0.1',
+    'localhost',
+]
 
 
 # Application definition
@@ -37,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'django.contrib.humanize',
-	'main',
+    'django.contrib.humanize',
+    'main',
+    'wkhtmltopdf',
+    'main.templatetags',
 ]
 
 MIDDLEWARE = [
@@ -119,11 +125,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'main/static/')
 STATIC_URL = '/static/'
 
-LOGIN_URL = '/login'
-LOGIN_REDIRECT_URL = '/main'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'main/media/')
+MEDIA_URL = '/media/'
+
+LOGIN_URL = '/main/login/'
+LOGIN_REDIRECT_URL = '/main/'
 
 # Simple books settings
 BOOKS_DEFAULT_BOOK = 'KAS'
 BOOKS_DEFAULT_CURRENCY = 'PLN'
+
+# Pdf settings
+PDF_NUMBER_OF_ITEMS_PER_PAGE = 20
+
+# Path to wkhtmltopdf executable
+WKHTMLTOPDF_CMD = 'C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf'
