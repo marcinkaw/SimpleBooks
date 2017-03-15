@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <style>
+        body {
+            font-family: Arial;
+            letter-spacing: normal;
+            margin: 0;
+        }
+
+        table {
+             border-collapse: collapse;
+             width: 642px;
+             height: 434px;
+        }
+
+        table, th, td {
+           border: 1px solid black;
+        }
+
+        tr:last-child {
+            height: 80px;
+        }
+
+        table td {
+            vertical-align: top;
+            padding: 3px;
+        }
+
+        span {
+            display: block;
+        }
+
+        .title {
+            font-size: small;
+        }
+
+        .value {
+            margin-top: 5px;
+        }
+
+        .breakable-tag {
+            height: 0;
+            page-break-after: always;
+        }
+
+        .single-table {
+            padding: 30px;
+            display: inline-block;
+            margin: -2px;
+        }
+
+        div.single-table:nth-of-type(4n+1) {
+            border-right: 1px solid;
+            border-bottom: 1px solid;
+        }
+
+        div.single-table:nth-of-type(4n+2) {
+            border-bottom: 1px solid;
+        }
+
+        div.single-table:nth-of-type(4n+3) {
+            border-right: 1px solid;
+        }
+
+        .amount-text {
+            display: inline-block;
+        }
+
+        .amount-value {
+            display: inline-block;
+            float: right;
+        }
+
+        .center {
+            vertical-align:middle;
+        }
+
+        .thick {
+            font-weight: bold;
+        }
+
+        .fixed-width {
+            width: 55%;
+        }
+    </style>
+</head>
+
+<body>
+    {% for item in items %}
+        <div class="single-table">
+            {% block table %}{% endblock %}
+        </div>
+
+        {% if forloop.counter|divisibleby:"4" and forloop.counter != items|length %}
+            <p class="breakable-tag"></p>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>
