@@ -1,35 +1,12 @@
-{% extends "main/layout.html" %}
+{% extends "main/layouts/layout_item.html" %}
 
-{% block content %}
+{% block header_title %}Edytuj wpis{% endblock %}
 
-<script language="javascript">
+{% block form %}
+    <form method="POST" action="{% url 'item_edit' report.id item.id %}" class="form-horizontal">
+{% endblock %}
 
-    $(document).ready(function () {
-        $('#id_itemDate').datepicker({ dateFormat: 'dd.mm.yy' }).val();
-        //$('#id_amount').spinner({
-        //    min: .01,
-        //    step: 1
-        //});
-        $("input[type=text]").focus(function () {
-            $(this).select();
-        });
-        $("input[type=number]").focus(function () {
-            $(this).select();
-        });
-        $("#id_party").autocomplete({
-            source: "/main/api/get_partys/",
-            minLength: 3,
-        });
-    });
-
-</script>
-
-<form method="POST" action="{% url 'item_edit' report.id item.id %}">
-  {% csrf_token %}
-  <table>
-      {{ form }}
-  </table>
-  <input type="submit" value="Edytuj"/>
-</form>
-
+{% block buttons %}
+    <button type="submit" class="btn btn-default">Zapisz</button>
+    <a href="{% url 'report_detail' report.id %}" class="btn btn-default">Anuluj</a>
 {% endblock %}

@@ -1,0 +1,68 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+<script language="javascript">
+    $(document).ready(function () {
+        $("input[type=text]").focus(function () {
+            $(this).select();
+        });
+        $("input[type=number]").focus(function () {
+            $(this).select();
+        });
+        $("#id_party").autocomplete({
+            source: "/main/api/get_partys/",
+            minLength: 3,
+        });
+
+        $('#id_itemDate').datepicker({ dateFormat: 'dd.mm.yy' }).val();
+    });
+
+</script>
+
+<h2>{% block header_title %}{% endblock %}</h2>
+
+
+{% block form %}{% endblock %}
+
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="col-md-1 control-label">Kasa</label>
+        <div class="col-md-5">
+            <a class="" href="{% url 'report_detail' report.id %}">{{ report }} - Od: {{ report.report_from_date_numeric }}; do: {{ report.report_to_date_numeric }}</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-1 control-label">Tytuł</label>
+        <div class="col-md-3">
+            {{ form.title }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-1 control-label">KW/KP</label>
+        <div class="col-md-3">
+            {{ form.itemDirection }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-1 control-label">Data</label>
+        <div class="col-md-3">
+            {{ form.itemDate }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-1 control-label">Kontrahent</label>
+        <div class="col-md-3">
+            {{ form.party }}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-1 control-label">Wartość</label>
+        <div class="col-md-3">
+            {{ form.amount }}
+        </div>
+    </div>
+    {% block buttons %}{% endblock %}
+</form>
+
+{% endblock %}

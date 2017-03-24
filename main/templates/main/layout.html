@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,11 +6,16 @@
     <title>{{ title }} - Prosta kasa</title>
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'main/content/bootstrap.min.css' %}" />
+    <!-- link rel="stylesheet" type="text/css" href="{% static 'main/scripts/ui/jquery-ui.css' %}" /-->
     <link rel="stylesheet" type="text/css" href="{% static 'main/content/site.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'main/scripts/ui/jquery-ui.css' %}" />
-    <script src="{% static 'main/scripts/jquery-1.10.2.js' %}"></script>
-    <script src="{% static 'main/scripts/ui/jquery-ui.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{% static 'main/scripts/bootstrap.js' %}"></script>
+    <script src="{% static 'main/scripts/respond.js' %}"></script>
+    <!-- script src="{% static 'main/scripts/jquery-1.10.2.js' %}"></script -->
+    <!--script src="{% static 'main/scripts/ui/jquery-ui.js' %}"></script -->
     <script src="{% static 'main/scripts/modernizr-2.6.2.js' %}"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 </head>
 
 <body>
@@ -26,7 +31,6 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="{% url 'home' %}">Raporty</a></li>
                     <li><a href="{% url 'about' %}">O kasie</a></li>
                     <li><a href="{% url 'contact' %}">Kontakt</a></li>
                     <li><a href="/admin/">Admin</a></li>
@@ -43,9 +47,6 @@
             <p>&copy; CODEFUSION {{ year }} - Prosta kasa</p>
         </footer>
     </div>
-
-    <script src="{% static 'main/scripts/bootstrap.js' %}"></script>
-    <script src="{% static 'main/scripts/respond.js' %}"></script>
 {% block scripts %}{% endblock %}
 
 </body>

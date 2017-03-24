@@ -39,8 +39,7 @@ class Report(models.Model):
                                 )
     creator = models.ForeignKey(User, related_name="Utworzony przez+",
                                 verbose_name="Utworzony przez")
-    lastAmount = models.DecimalField('Przeniesienie', max_digits=10, decimal_places=2, default=0)
-    trasnferAmount = models.DecimalField('Stan kasy poprzedni', max_digits=10, decimal_places=2, default=0)
+    transferAmount = models.DecimalField('Stan kasy poprzedni', max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return str(self.book.abbreviation + " " + self.currency.abbreviation)
@@ -53,15 +52,29 @@ class Report(models.Model):
 
     @property
     def sumIn(self):
-        return Item.objects.filter(report = self).filter(itemDirection='in').aggregate(Sum('amount')).get('amount__sum',0)
+        items = Item.objects.filter(report = self).filter(itemDirection='in')
+        if items.count() > 0:
+            return items.aggregate(Sum('amount')).get('amount__sum',0)
+        return 0
 
     @property
     def sumOut(self):
-        return Item.objects.filter(report = self).filter(itemDirection='out').aggregate(Sum('amount')).get('amount__sum',0)
+        items = Item.objects.filter(report = self).filter(itemDirection='out')
+        if items.count() > 0:
+            return items.aggregate(Sum('amount')).get('amount__sum',0)
+        return 0
 
     @property
     def amount(self):
-        return float(self.trasnferAmount) + float(self.sumIn) - float(self.sumOut)
+        return float(self.transferAmount) + float(self.sumIn) - float(self.sumOut)
+
+    @property
+    def report_from_date_numeric(self):
+        return str(str(self.fromDate.day).zfill(2) + "." + str(self.fromDate.month).zfill(2) + "." + str(self.fromDate.year))
+
+    @property
+    def report_to_date_numeric(self):
+        return str(str(self.toDate.day).zfill(2) + "." + str(self.toDate.month).zfill(2) + "." + str(self.toDate.year))
 
 
 class Item(models.Model):	
@@ -89,10 +102,10 @@ class Item(models.Model):
 
     @property
     def number(self):
-        items = Item.objects.filter(report = self.report).filter(itemDirection=self.itemDirection).filter(itemDate__lt=self.itemDate).order_by('itemDate').order_by('id')
+        items = Item.objects.filter(report=self.report).filter(itemDirection=self.itemDirection).filter(itemDate__lt=self.itemDate).order_by('itemDate').order_by('id')
 
         # manage items with the same date
-        items_same_date = Item.objects.filter(report = self.report).filter(itemDirection=self.itemDirection).filter(itemDate=self.itemDate).order_by('id')
+        items_same_date = Item.objects.filter(report=self.report).filter(itemDirection=self.itemDirection).filter(itemDate=self.itemDate).order_by('id')
         ad = 1
         for it in items_same_date:
             if it.id==self.id:
@@ -103,13 +116,13 @@ class Item(models.Model):
 
     @property
     def letter(self):
-        items = Item.objects.filter(report = self.report).filter(itemDate__lt=self.itemDate).order_by('itemDate').order_by('id')
+        items = Item.objects.filter(report=self.report).filter(itemDate__lt=self.itemDate).order_by('itemDate').order_by('id')
 
         # manage items with the same date
-        items_same_date = Item.objects.filter(report = self.report).filter(itemDate=self.itemDate).order_by('id')
+        items_same_date = Item.objects.filter(report=self.report).filter(itemDate=self.itemDate).order_by('id')
         ad = 1
         for it in items_same_date:
-            if it.id==self.id:
+            if it.id == self.id:
                 break
             ad = ad + 1
 

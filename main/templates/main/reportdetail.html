@@ -1,4 +1,6 @@
-﻿{% extends "main/layout.html" %}
+{% extends "main/layout.html" %}
+
+{% load humanize %}
 
 {% block content %}
 
@@ -17,41 +19,39 @@
     }
 
 </script>
+<h3>Wpisy w kasie:</h3>
+<a class="btn btn-success" href="{% url 'item_add' report.id %}" style="margin-top: 20px;">Dodaj wpis</a>
+{% if items|length > 0 %}
 
-<form class="form-inline" method="POST" action="/main/report/edit/{{ report.id }}/">
-  {% csrf_token %}
-  {{ form }}
-  <input type="submit" value="Aktualizuj"/>
-</form>
+<div id="dialog" title="Potwiedź swój wybór" class="ui-dialog-titlebar">
+    Czy na pewno chcesz usunąć ten element?
+</div>
 
-<p>Dodaj do kasy: <a class="btn btn-primary" href="{% url 'item_add' report.id %}">Dodaj wpis</a></p>
-
-Pozycje w kasie:
-
+<div class="table-responsive">
 <table class="table table-striped table-condensed">
     <thead>
         <tr>
-            <td>
+            <th>
                 Lp
-            </td>
-            <td>
+            </th>
+            <th>
                 Numer<br />Data wystawienia
-            </td>
-            <td>
+            </th>
+            <th>
                 Tytułem
-            </td>
-            <td>
+            </th>
+            <th>
                 Kontrahent
-            </td>
-            <td>
+            </th>
+            <th>
                 Przychód
-            </td>
-            <td>
+            </th>
+            <th>
                 Rozchód
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
+            </th>
+            <th colspan="3">
+                Opcje
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -81,26 +81,65 @@ Pozycje w kasie:
                 {% endif %}
             </td>
             <td>
-                <p><a class="btn btn-success" href="{% url 'receipt_print_single' item.id %}">Drukuj dokument</a></p>
+                <p><a class="btn btn-success" href="{% url 'receipt_print_single' item.id %}" target="_blank">Drukuj dokument</a></p>
             </td>
             <td>
                 <p><a class="btn btn-warning" href="{% url 'item_edit' report.id item.id %}">Edytuj wpis</a></p>
             </td>
             <td>
-                <p><a class="btn btn-danger" href="{% url 'item_delete' report.id item.id %}">Usuń wpis</a></p>
+                <p><a class="btn btn-danger confirmLink" href="{% url 'item_delete' report.id item.id %}">Usuń wpis</a></p>
             </td>
         </tr>
-
-{% empty %}
-Brak wpisów.
 {% endfor %}
+    <tr>
+        <td colspan="4">Obroty</td>
+        <td>{{ report.sumIn|floatformat:2  }}</td>
+        <td>{{ report.sumOut|floatformat:2  }}</td>
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td colspan="4">Stan poprzedni kasy</td>
+        <td>{{ report.transferAmount|floatformat:2 }}</td>
+        <td></td>
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td colspan="4">Stan kasy obecny</td>
+        <td></td>
+        <td>{{ report.amount|floatformat:2 }}</td>
+        <td colspan="3"></td>
+    </tr>
     </tbody>
 </table>
+</div>
 
-{% if items|length > 0 %}
-    <p>Ilość wpisów na strone: <input id="id_items_per_page" type="number" min="1" max="25" value="20"></p>
-    <a onclick="printClick(this);" class="btn btn-primary" href="{% url 'report_print' report.id %}">Drukuj raport</a>
-    <a class="btn btn-primary" href="{% url 'receipt_print' report.id %}">Drukuj dokument kasowy</a>
+<a class="btn btn-success" href="{% url 'item_add' report.id %}">Dodaj wpis</a>
+{% else %}
+<h4>Brak wpisów</h4>
 {% endif %}
 
+{% if items|length > 0 %}
+<div class="row" style="margin-top: 20px;">
+    <div class="col-md-8">
+        <div class="form-inline">
+            Ilość wpisów na strone:
+            <input id="id_items_per_page" style="width:70px" class="form-control" type="number" min="1" max="25" value="20">
+            <a onclick="printClick(this);"  class="btn btn-default" href="{% url 'report_print' report.id %}" target="_blank">Drukuj raport</a>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 5px;">
+    <div class="col-md-8">
+        <a class="btn btn-default" href="{% url 'receipt_print' report.id %}" target="_blank">Drukuj dokument kasowy</a>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+    {% load staticfiles %}
+    <script src="{% static 'main/scripts/dialog.js' %}"></script>
 {% endblock %}

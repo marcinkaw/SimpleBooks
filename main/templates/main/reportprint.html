@@ -1,12 +1,9 @@
-﻿{% extends "main/pdf/layout_report.html" %}
+{% extends "main/pdf/layout_report.html" %}
 
 {% load pdf_tags %}
 
 {% block header %}
-<span>CODEFUSION Spółka z ograniczoną odpowiedzialnością</span>
-<span>ul. Armii Krajowej 16/2</span>
-<span>45-071 Opole</span>
-<span>NIP: 7542999127</span>
+{{ company_info|safe }}
 {% endblock %}
 
 {% block details %}
@@ -87,7 +84,7 @@ No items.
         </tr>
         <tr>
             <td>Stan kasy poprzedni</td>
-            <td width="80px">{{ report.trasnferAmount|floatformat:2 }}</td>
+            <td width="80px">{{ report.transferAmount|floatformat:2 }}</td>
             <td width="80px"></td>
         </tr>
         <tr>

@@ -1,0 +1,84 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+<script language="javascript">
+    function get_prev_report_amount() {
+        $.ajax({
+            url:'/main/api/get_prev_report_amount/',
+            type: "POST",
+            data: {
+                date: $('#id_fromDate').val(),
+                book: $('#id_book option:selected').text(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success:function(response) {
+                amount = parseFloat(response);
+                $(".previous_amount").html('Sugerowana wartość: ' + amount.toFixed(2));
+            },
+            complete:function(){},
+            error:function (xhr, textStatus, thrownError) {
+                $('.previous_amount').html('');
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $('#id_fromDate').change(function() {
+            get_prev_report_amount();
+        });
+        $('#id_book').change(function() {
+            get_prev_report_amount();
+        });
+
+
+        $('#id_fromDate').datepicker({ dateFormat: 'dd.mm.yy' }).val();
+		$('#id_toDate').datepicker({ dateFormat: 'dd.mm.yy' }).val();
+
+		get_prev_report_amount();
+    });
+
+</script>
+
+<h2>{% block header_title %}{% endblock %}</h2>
+
+<form method="POST" action="." class="form-horizontal">
+    {% csrf_token %}
+    {% block current_book %}{% endblock %}
+    <div class="form-group">
+      <label class="col-md-2 control-label">Początek miesiąca</label>
+      <div class="col-md-3">
+          {{ form.fromDate }}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2 control-label">Początek miesiąca</label>
+      <div class="col-md-3">
+          {{ form.toDate }}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2 control-label">Kasa</label>
+      <div class="col-md-3">
+          {{ form.book }}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2 control-label">Waluta</label>
+      <div class="col-md-3">
+          {{ form.currency }}
+      </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Stan kasy poprzedni</label>
+        <div class="col-md-3">
+            {{ form.transferAmount }}
+        </div>
+        <p class="previous_amount"></p>
+    </div>
+
+    {% block buttons %}{% endblock %}
+
+</form>
+
+{% endblock %}
