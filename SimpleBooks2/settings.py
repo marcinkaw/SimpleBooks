@@ -143,3 +143,8 @@ PDF_NUMBER_OF_ITEMS_PER_PAGE = 20
 
 # Path to wkhtmltopdf executable
 WKHTMLTOPDF_CMD = 'C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf'
+
+PDF_COMPANY_INFO = "<span>CODEFUSION Spółka z ograniczoną odpowiedzialnością</span>"\
+                    "<span>ul. Armii Krajowej 16/2</span>"\
+                    "<span>45-071 Opole</span>"\
+                    "<span>NIP: 7542999127</span>"

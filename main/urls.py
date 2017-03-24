@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^item/edit/(?P<rpk>\d+)/(?P<pk>\d+)/$', views.item_edit, name='item_edit'),
     url(r'^item/delete/(?P<rpk>\d+)/(?P<pk>\d+)/$', views.item_delete, name='item_delete'),
     url(r'^api/get_partys/', views.get_partys, name='get_partys'),
+    url(r'^api/get_prev_report_amount/', views.get_previous_report_amount, name='get_previous_report_amount'),
 
     url(r'^login/$',
         auth_views.login,

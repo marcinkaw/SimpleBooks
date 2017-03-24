@@ -16,6 +16,7 @@ import json
 from django.http import HttpResponse
 from wkhtmltopdf.views import PDFTemplateResponse
 import math
+import sys
 
 
 def index(request):
@@ -25,13 +26,29 @@ def index(request):
 def home(request):
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
-    all_reports = Report.objects.all().order_by('-fromDate')
-    context = {'all_reports': all_reports}
-    return render(
-        request,
-        'main/index.html',
-        context
-    )
+
+    if request.user.is_authenticated:
+        all_reports = Report.objects.all().order_by('-fromDate')
+
+        all_years = []
+        for d in Report.objects.all().dates('fromDate', 'year').order_by('-fromDate'):
+            if d.year not in all_years:
+                all_years.append(d.year)
+
+        all_books = Book.objects.all()
+
+        context = {
+            'all_reports': all_reports,
+            'all_years': all_years,
+            'all_books': all_books,
+        }
+        return render(
+            request,
+            'main/index.html',
+            context
+        )
+    else:
+        return redirect('login')
 
 
 def contact(request):
@@ -99,6 +116,8 @@ def report_print(request, pk, page_items=0):
     elif page_items >= 25:
         page_items = 25
 
+    company_info = getattr(settings, 'PDF_COMPANY_INFO', 'Brak')
+
     try:
         report = Report.objects.get(pk=pk)
         form = ReportForm(instance=report)
@@ -115,6 +134,7 @@ def report_print(request, pk, page_items=0):
             'items': items,
             'page_range': range(pages),
             'items_per_page': page_items,
+            'company_info': company_info,
         }
         cmd_options = {}
 
@@ -124,6 +144,8 @@ def report_print(request, pk, page_items=0):
 
 @login_required
 def receipt_print(request, pk):
+    company_info = getattr(settings, 'PDF_COMPANY_INFO', 'Brak')
+
     try:
         report = Report.objects.get(pk=pk)
         items = Item.objects.all().filter(report=report).order_by('itemDate')
@@ -132,7 +154,10 @@ def receipt_print(request, pk):
     except Report.DoesNotExist:
         raise Http404("Raport nie istnieje!")
     else:
-        context = {"items": items}
+        context = {
+            'items': items,
+            'company_info': company_info,
+        }
         cmd_options = {
             'orientation': 'landscape',
             'margin-top': 0,
@@ -147,13 +172,18 @@ def receipt_print(request, pk):
 
 @login_required
 def receipt_print_single(request, pk):
+    company_info = getattr(settings, 'PDF_COMPANY_INFO', 'Brak')
+
     try:
         item = Item.objects.get(pk=pk)
     except Item.DoesNotExist:
         raise Http404("Wpis nie istnieje!")
     else:
-        list = [item]
-        context = {"items": list}
+        lst = [item]
+        context = {
+            'items': lst,
+            'company_info': company_info,
+        }
         cmd_options = {
             'orientation': 'landscape',
             'margin-top': 0,
@@ -188,17 +218,24 @@ def report_add(request):
 
 @login_required
 def report_edit(request, pk):
-    if request.method == 'POST':
-        form = ReportForm(data=request.POST)
-        if form.is_valid():
-            try:
-                report = Report.objects.get(pk=pk)
+    try:
+        report = Report.objects.get(pk=pk)
+    except Report.DoesNotExist:
+        raise Http404("Raport nie istnieje!")
+    else:
+        if request.method == 'POST':
+            form = ReportForm(data=request.POST)
+            if form.is_valid():
                 report_form = ReportForm(data=request.POST, instance=report)
                 report_form.save()
-                return report_detail(request, pk)
-            except Report.DoesNotExist:
-                raise Http404("Raport nie istnieje!")
-    return redirect('home')
+                return home(request)
+        else:
+            form = ReportForm(instance=report)
+            context = {
+                'form': form,
+                'report': report,
+            }
+            return render(request, "main/reportedit.html", context)
 
 
 @login_required
@@ -244,7 +281,7 @@ def item_edit(request, rpk, pk):
         context = {'form': form, 'report': report, 'item': item}
         return render(request, "main/itemedit.html", context)
 
-
+@login_required
 def item_delete(request, rpk, pk):
     assert isinstance(request, HttpRequest)
     try:
@@ -271,3 +308,20 @@ def get_partys(request):
 
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
+
+
+def get_previous_report_amount(request):
+    if request.is_ajax() and request.method == 'POST':
+        try:
+            dt = request.POST.get('date', 'error')
+            book = request.POST.get('book', 'error')
+            proper_date = datetime.datetime.strptime(dt, '%d.%m.%Y')
+            reports = Report.objects.filter(fromDate__month__lt=proper_date.month,
+                                            fromDate__year__lte=proper_date.year,
+                                            book__abbreviation=book).order_by('-fromDate')
+            if reports.count() > 0:
+                return HttpResponse(reports[0].amount)
+        except ValueError:
+            pass
+
+    raise Http404()

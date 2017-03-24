@@ -1,6 +1,5 @@
 from django import template
 from main.utils.pyliczba import kwotaslownie
-import math
 
 register = template.Library()
 
