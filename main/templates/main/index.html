@@ -42,21 +42,27 @@
     Czy na pewno chcesz usunąć ten element?
 </div>
 
-<div class="table-responsive">
+
 <table class="table table-striped table-condensed" style="font-size:16px;">
     <thead>
         <tr>
             <th>
                 Raport
             </th>
-            <th>
+            <th data-breakpoints="xs">
                 Stan kasy poprzedni
             </th>
-            <th>
+            <th data-breakpoints="xs">
                 Stan kasy obecny
             </th>
-            <th colspan="3">
+            <th  data-breakpoints="xs">
                 Opcje
+            </th>
+             <th  data-breakpoints="xs">
+                
+            </th>
+             <th  data-breakpoints="xs">
+               
             </th>
         </tr>
     </thead>
@@ -65,28 +71,28 @@
         {% check_for_year_divider all_reports forloop.counter0 as divider %}
         {% if divider %}
             {% get_year_from_date report.fromDate as year %}
-            <tr class="year-{{ year }}">
+            <tr class="year-{{ year }} year-header">
                 <td style="background-color: #f9f9f9;" colspan="6"><b>{{ year }}</b></td>
             </tr>
         {% endif %}
 
         <tr class="{{ report.fromDate.year }} {{ report.book.abbreviation }}">
-            <td style="background-color: white;">
+            <td class='toggleable' style="background-color: white;">
                 <a href="{% url 'report_detail' report.id %}">{{ report }} - Od: {{ report.report_from_date_numeric }}; do: {{ report.report_to_date_numeric }}</a>
             </td>
-            <td style="background-color: white;">
+            <td class='toggleable' style="background-color: white;">
                 {{ report.transferAmount|floatformat:2 }}
             </td>
-            <td style="background-color: white;">
+            <td class='toggleable' style="background-color: white;">
                 {{ report.amount|floatformat:2 }}
             </td>
-            <td style="background-color: white;">
+            <td class='toggleable' style="background-color: white;">
                 <p><a class="btn btn-success" href="{% url 'item_add' report.id %}">Dodaj wpis</a></p>
             </td>
-            <td style="background-color: white;">
+            <td class='toggleable' style="background-color: white;">
                 <p><a class="btn btn-warning" href="{% url 'report_edit' report.id %}">Edytuj raport</a></p>
             </td>
-            <td style="background-color: white;">
+            <td class='toggleable' style="background-color: white;">
                 <p><a class="btn btn-danger confirmLink" href="{% url 'report_delete' report.id %}">Usuń raport</a></p>
             </td>
         </tr>
@@ -95,7 +101,7 @@ Brak raportów!
 {% endfor %}
     </tbody>
 </table>
-</div>
+
 
     {% block scripts %}
         {% load staticfiles %}
@@ -188,6 +194,38 @@ Brak raportów!
                 }
             });
         });
+        
+        $('.table').footable({
+            "toggleColumn": "last",
+            "toggleSelector": ".toggleable,.footable-toggle",
+        });
+
+        cells = $('.year-header').children(); 
+        chunks = []
+        while(cells.length){
+            chunks.push(cells.splice(0,6))
+        }
+        console.log(chunks)
+        for(i in chunks){
+            for(x in chunks[i]){
+                if(x > 0)
+                    chunks[i][x].remove()
+            }
+        }
+        
+        (function($, viewport){ // remove span on window change to xs
+            $(document).ready(function() {
+                $(window).resize(
+                    viewport.changed(function() {
+                        if(viewport.is('xs')) {
+                            $('.year-header td').find("span").remove();
+                        }
+                    })
+                );
+            });
+        })(jQuery, ResponsiveBootstrapToolkit);
+        
+       
         </script>
 
     {% endblock %}

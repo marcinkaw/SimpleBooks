@@ -142,7 +142,7 @@ BOOKS_DEFAULT_CURRENCY = 'PLN'
 PDF_NUMBER_OF_ITEMS_PER_PAGE = 20
 
 # Path to wkhtmltopdf executable
-WKHTMLTOPDF_CMD = 'C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf'
+WKHTMLTOPDF_CMD = 'SimpleBooks/wkhtmltopdf/bin/wkhtmltopdf'
 
 PDF_COMPANY_INFO = "<span>CODEFUSION Spółka z ograniczoną odpowiedzialnością</span>"\
                     "<span>ul. Armii Krajowej 16/2</span>"\
