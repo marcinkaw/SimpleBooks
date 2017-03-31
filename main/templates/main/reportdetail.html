@@ -27,8 +27,7 @@
     Czy na pewno chcesz usunąć ten element?
 </div>
 
-<div class="table-responsive">
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed table-toggle">
     <thead>
         <tr>
             <th>
@@ -37,20 +36,24 @@
             <th>
                 Numer<br />Data wystawienia
             </th>
-            <th>
+            <th data-breakpoints='xs'>
                 Tytułem
             </th>
-            <th>
+            <th data-breakpoints='xs'>
                 Kontrahent
             </th>
-            <th>
+            <th data-breakpoints='xs'>
                 Przychód
             </th>
-            <th>
+            <th data-breakpoints='xs'>
                 Rozchód
             </th>
-            <th colspan="3">
+            <th data-breakpoints='xs'>
                 Opcje
+            </th>
+            <th data-breakpoints='xs'>
+            </th>
+            <th data-breakpoints='xs'>
             </th>
         </tr>
     </thead>
@@ -91,28 +94,54 @@
             </td>
         </tr>
 {% endfor %}
-    <tr>
+   <tr class='hidden-xs'>
         <td colspan="4">Obroty</td>
         <td>{{ report.sumIn|floatformat:2  }}</td>
         <td>{{ report.sumOut|floatformat:2  }}</td>
-        <td colspan="3"></td>
+        <td colspan='3'></td>
+
     </tr>
-    <tr>
+    <tr class='hidden-xs'>
         <td colspan="4">Stan poprzedni kasy</td>
         <td>{{ report.transferAmount|floatformat:2 }}</td>
-        <td></td>
-        <td colspan="3"></td>
+        <td colspan='3'></td>        
     </tr>
-    <tr>
+    <tr class='hidden-xs'>
         <td colspan="4">Stan kasy obecny</td>
         <td></td>
         <td>{{ report.amount|floatformat:2 }}</td>
-        <td colspan="3"></td>
+        <td colspan='3'></td>
     </tr>
     </tbody>
 </table>
-</div>
-
+<div class='visible-xs'>
+<table class='table'>
+<thead>
+<tr>
+<th></th>
+<th>Przychód</th>
+<th>Odchód</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+        <td>Obroty</td>
+        <td>{{ report.sumIn|floatformat:2  }}</td>
+        <td>{{ report.sumOut|floatformat:2  }}</td>
+        
+    </tr>
+    <tr>
+        <td>Stan poprzedni kasy</td>
+        <td>{{ report.transferAmount|floatformat:2 }}</td>
+        <td></td>
+    <tr>
+        <td>Stan kasy obecny</td>
+        <td></td>
+        <td>{{ report.amount|floatformat:2 }}</td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
 <a class="btn btn-success" href="{% url 'item_add' report.id %}">Dodaj wpis</a>
 {% else %}
 <h4>Brak wpisów</h4>
@@ -130,7 +159,7 @@
 </div>
 
 <div class="row" style="margin-top: 5px;">
-    <div class="col-md-8">
+    <div class="col-md-4">
         <a class="btn btn-default" href="{% url 'receipt_print' report.id %}" target="_blank">Drukuj dokument kasowy</a>
     </div>
 </div>
@@ -142,4 +171,25 @@
 {% block scripts %}
     {% load staticfiles %}
     <script src="{% static 'main/scripts/dialog.js' %}"></script>
+    <script>
+    
+        $('.table-toggle').footable({
+            "toggleColumn": 'last',
+        })
+
+        cells = $('.table-toggle>tbody>tr').children()
+        chunks = []
+        while(cells.length){
+            chunks.push(cells.splice(0,9))
+        }
+        chunks.reverse()
+        for (i = 0; i<3; i++){
+            for(elem in chunks[i]){
+                if (elem >= 4){
+                    chunks[i][elem].remove()
+                }
+            }
+        }
+    </script>
+
 {% endblock %}
